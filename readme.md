@@ -17,3 +17,4 @@ Usermanagement:
   - github: https: //docs.github.com/en/get-started 
   - for question session: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/index.html
   - for questions as well: https://docs.oracle.com/javase/tutorial/java/index.html
+  - and another one: https://docs.oracle.com/javase/tutorial/essential/index.html
