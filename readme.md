@@ -16,3 +16,4 @@ Usermanagement:
   - rest with java; https://spring.io/guides/gs/rest-service/
   - github: https: //docs.github.com/en/get-started 
   - for question session: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/index.html
+  - for questions as well: https://docs.oracle.com/javase/tutorial/java/index.html
