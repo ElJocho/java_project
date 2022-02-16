@@ -15,4 +15,4 @@ Usermanagement:
   Docu from Rafael:
   - rest with java; https://spring.io/guides/gs/rest-service/
   - github: https: //docs.github.com/en/get-started 
-  - https://docs.oracle.com/javase/tutorial/java/nutsandbolts/index.html
+  - for question session: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/index.html
