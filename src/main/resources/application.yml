@@ -1,2 +1,9 @@
 server:
   port: 8090
+spring:
+  datasource:
+    initialization-mode: always
+    platform: postgres
+    url: jdbc:postgresql://localhost:9091/imageGuesser
+    username: imageGuesser
+    password: imageGuesser
