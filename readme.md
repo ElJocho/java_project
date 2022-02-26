@@ -14,7 +14,7 @@ Usermanagement:
   
   Docu from Rafael:
   - rest with java; https://spring.io/guides/gs/rest-service/
-  - github: https: //docs.github.com/en/get-started 
+  - github: https://docs.github.com/en/get-started 
 
 
   Docu for Questions:
