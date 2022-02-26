@@ -10,6 +10,7 @@ Usermanagement:
   Architecture:
   - javabackend -> with REST API
   - javascript frontend
+  - Postgres (gis?) db
   
   
   Docu from Rafael:
