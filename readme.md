@@ -25,4 +25,4 @@ Usermanagement:
 
   Super helpful links:
    - Spring DB Interface: https://www.vogella.com/tutorials/SpringJDBC/article.html
-
+   - Spring Security with JDBC (not sure if we will use that just yet): https://www.youtube.com/watch?v=LKvrFltAgCQ
