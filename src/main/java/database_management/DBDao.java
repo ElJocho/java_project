@@ -22,11 +22,11 @@ public class DBDao implements Dao {
                 new Object[] { userName, password });
     }
 
-    public List<Player> select(int id) {
+    public List<Player> select(String username) {
         JdbcTemplate select = new JdbcTemplate(dataSource);
         return select.query(
-                        "set search_path=imageguesser, public; select  id, username, password from Player where id = ?",
-                        playerRowMapper, new Object[]{id}
+                        "set search_path=imageguesser, public; select  id, username, password from Player where username = ?",
+                        playerRowMapper, new Object[]{username}
                 );
     }
 

@@ -1,0 +1,144 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 60px;
+  background-color: transparent;
+  margin-left: 15px;
+}
+
+.App-header {
+  background-color: #222;
+  min-height: 65px;
+  height: 10vh;
+  color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Position and sizing of burger button */
+.bm-burger-button {
+  position: relative;
+  width: 36px;
+  height: 30px;
+  margin-right: 15px;
+}
+
+/* Color/shape of burger icon bars */
+.bm-burger-bars {
+  background: #fff;
+}
+
+/* Color/shape of burger icon bars on hover*/
+.bm-burger-bars-hover {
+  background: light-gray;
+}
+
+/* Position and sizing of clickable cross button */
+.bm-cross-button {
+  height: 24px;
+  width: 24px;
+}
+
+/* Color/shape of close button cross */
+.bm-cross {
+  background: #bdc3c7;
+}
+
+/*
+Sidebar wrapper styles
+Note: Beware of modifying this element as it can break the animations - you should not need to touch it in most cases
+*/
+.bm-menu-wrap {
+  position: absolute;
+  height: 100%;
+  top: 0px;
+  overflow: hidden;
+}
+
+/* General sidebar styles */
+.bm-menu {
+  background: #373a47;
+  padding: 2.5em 1.5em 0;
+  font-size: 1.15em;
+    overflow: hidden;
+
+}
+
+/* Morph shape necessary with bubble or elastic */
+.bm-morph-shape {
+  fill: #373a47;
+}
+
+/* Wrapper for item list */
+.bm-item-list {
+  color: #b8b7ad;
+}
+
+/* Individual item */
+.bm-item {
+  display: inline-block;
+  color: white;
+  text-decoration: none; /* no underline */
+  padding: 10px;
+}
+
+/* Styling of overlay */
+.bm-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+
+.image_guess {
+  width: 60%; 
+  min-width: 350px;
+  height: 30vh; 
+  object-fit: cover;
+  margin: 15px auto;
+}
+
+.button_guess {
+
+  background-color: initial;
+  background-image: linear-gradient(-180deg, #00D775, #00BD68);
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0 2px 4px;
+  color: #FFFFFF;
+  cursor: pointer;
+  min-height: 30px;
+  line-height: 30px;
+  outline: 0;
+  overflow: hidden;
+  pointer-events: auto;
+  text-align: center;
+  touch-action: manipulation;
+  width: 20%;
+  min-width: 125px;
+  border: 0;
+  margin: 15px auto;
+}
+
+.button_guess:hover {
+  background: #00bd68;
+}
+
+
+.menu-item {
+  background: none;
+	color: white;
+	border: none;
+	padding: 10px;
+	font: inherit;
+	cursor: pointer;
+	outline: inherit;
+  margin: 10px auto;
+}

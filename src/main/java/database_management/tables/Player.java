@@ -4,6 +4,12 @@ public class Player {
     private String userName;
     private int id;
     private String password;
+    public Player(String username, String password) {
+        // this.id = id;
+        this.userName = username;
+        this.password = password;
+    }
+    public Player(){}
 
     public String getUserName() {
         return userName;

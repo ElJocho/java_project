@@ -11,7 +11,7 @@ public interface Dao {
 
     void create(String username, String password);
 
-    List<Player> select(int id);
+    List<Player> select(String username);
 
     List<Player> selectAll();
 

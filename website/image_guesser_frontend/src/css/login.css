@@ -1,0 +1,9 @@
+.modal {
+    background-color: #373a47;
+    padding: 20px;
+    color: white;
+    margin: 30vh auto;
+}
+.modal-heading {
+    margin-top: 0;
+}

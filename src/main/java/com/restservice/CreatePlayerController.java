@@ -1,11 +1,12 @@
-package com.example.restservice;
+package com.restservice;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 import database_management.DBDao;
 
@@ -22,8 +23,8 @@ public class CreatePlayerController {
     @Value("${spring.datasource.password}")
     private String db_password;
 
-    @GetMapping("/create_player")
-    public Player player(@RequestParam(value = "username") String username, @RequestParam(value = "password") String password) {
+    // Connect Interface to Postgres and return it
+    public DBDao getDao(){
         DBDao dao = new DBDao();
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setUrl(url);
@@ -31,6 +32,17 @@ public class CreatePlayerController {
         dataSource.setPassword(db_password);
         dataSource.setDriverClassName("org.postgresql.Driver");
         dao.setDataSource(dataSource);
+        return dao;
+    }
+
+    @CrossOrigin
+    @PostMapping(value="/create_player", produces=MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    public Player player(@RequestBody ObjectNode objectNode) {
+        String username = objectNode.get("username").asText();
+        String password = objectNode.get("password").asText();
+        DBDao dao = getDao();
+        database_management.tables.Player player = dao.select(username).get(0);
+
         dao.create(username, password);
         return new Player(username, password);
     }
