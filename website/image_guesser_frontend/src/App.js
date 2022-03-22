@@ -86,9 +86,9 @@ class App extends Component {
                </div>
               :
               <div>
-                <h3>Here you can find active games.</h3>
-                <h3>Here you can find open lobbies.</h3>
-                <h3>Here you can find old games.</h3>
+                <h3>Active Games.</h3>
+                <h3>Open Lobbies.</h3>
+                <h3>Old Games.</h3>
               </div>
             }
 
