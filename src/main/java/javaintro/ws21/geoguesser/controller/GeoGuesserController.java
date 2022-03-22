@@ -16,8 +16,14 @@ public class GeoGuesserController {
 
     @PostMapping(value="/create_player", produces= MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
     public Player createPlayer(@RequestBody Player player){
-        return playerService.saveUpdatePerson(player);
+        return playerService.signUpPerson(player);
     }
+
+    @PostMapping(value="/login_player", produces= MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    public Player loginPlayer(@RequestBody Player player){
+        return playerService.loginPerson(player);
+    }
+
 
     @GetMapping(value="/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Player> listPlayers(){

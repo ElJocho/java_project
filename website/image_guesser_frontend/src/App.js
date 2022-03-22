@@ -11,29 +11,32 @@ class App extends Component {
     super(props);
     this.state = {
       modalActive: false,
-      token: null
+      token: false,
+      menuScreen: true,
+      login: null,
+      menuOpen: false
     };
-    this.activateModal = this.activateModal.bind(this);
+
     this.setToken = this.setToken.bind(this);
     this.disableModal = this.disableModal.bind(this);
-
-
-  }
-
-  activateModal(e){
-    this.setState({modalActive: true})
-  }
-
-  onLoginButtonClick(e){
+    this.activateLogin = this.activateLogin.bind(this);
+    this.activateSignUp = this.activateSignUp.bind(this);
+    this.logOut = this.logOut.bind(this)
 
   }
 
-  onSignupButtonClick(e){
-
+  handleStateChange (e) {
+    this.setState({menuOpen: e.isOpen})  
   }
+
+  logOut(e){
+    this.setState({token: false})
+  }
+
   setToken(token){
-    this.state.token = token;
+    this.setState({token: token, menuOpen: false});
   }
+
   disableModal = async e => {
     this.setState({modalActive: false})
   }
@@ -44,29 +47,64 @@ class App extends Component {
     console.log(coordinates)
   }
 
-  render() {
+  activateLogin(e){
+    this.setState({login: true, modalActive:true})
+  }
 
+  activateSignUp(e){
+    this.setState({login: false, modalActive:true})
+  }
+
+
+  render() {
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
           <h2>ImageGuesser</h2>
-          <Menu right>
+          <Menu right isOpen={ this.state.menuOpen } onStateChange={(state) => this.handleStateChange(state)}>
             <a id="home" className="menu-item" href="/">Home</a>
-            <button id="login" className="menu-item" onClick={this.activateModal}>Login</button>
-            <button id="signUp" className="menu-item">Sign Up</button>
-
+            {
+              this.state.token == false ?
+              <div style={{display:"flex", flexDirection:"column"}}>
+                <button id="login" className="menu-item" onClick={this.activateLogin}>Login</button>
+                <button id="signUp" className="menu-item" onClick={this.activateSignUp}>Sign Up</button>
+              </div>
+              :
+              <button id="logOut" className="menu-item" onClick={this.logOut}>Log Out</button>
+            }
           </Menu>
         </div>
-        <App_Body>
-          <h3>Welcome to ImageGuesser, a game that is <strong>definitely</strong> not just a bootlegged GeoGuessr</h3>
-          <img src={ require('./images/kyiv.jpg') } className="image_guess"/>
-          <Map>
-          </Map>
-          <button className='button_guess' onClick={this.onSubmitButtonClick}>Commit Guess</button>
-        </App_Body>
+        {
+          this.state.menuScreen ?
+          <App_Body>
+            {
+              this.state.token == false ?
+              <div>
+                <h3>Welcome to ImageGuesser, a game that is <strong>definitely</strong> not just a bootlegged GeoGuessr</h3>
+                <p>Please Login or Sign up via the menu in the upper right.</p>
+               </div>
+              :
+              <div>
+                <h3>Active Games.</h3>
+                <h3>Open Lobbies.</h3>
+                <h3>Old Games.</h3>
+              </div>
+            }
+
+          </App_Body>
+
+          :
+          <App_Body>
+            <h3>Try to guess where you are located based on the images below, then mark your position in the map.</h3>
+            <img src={ require('./images/kyiv.jpg') } className="image_guess"/>
+            <Map>
+            </Map>
+            <button className='button_guess' onClick={this.onSubmitButtonClick}>Commit Guess</button>
+          </App_Body>
+        }
         <p id="coordinates"></p>
-        <Login setToken={this.setToken} modalActive={this.state.modalActive} disableModal={this.disableModal}></Login>
+        <Login setToken={this.setToken} modalActive={this.state.modalActive} disableModal={this.disableModal} isLogin={this.state.login}></Login>
      </div>
     );
   }
