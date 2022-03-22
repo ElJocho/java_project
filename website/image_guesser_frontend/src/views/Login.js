@@ -3,28 +3,42 @@ import PropTypes from 'prop-types';
 import '../css/login.css';
 import AriaModal from 'react-aria-modal'
 
-async function loginUser(credentials) {
- return fetch('http://localhost:8090/create_player', {
+async function loginUser(credentials, isLogin) {
+ return fetch(`http://localhost:8090/${isLogin ? 'login_player' : 'create_player'}`, {
    method: 'POST',
    headers: {
      'Content-Type': 'application/json'
    },
    body: JSON.stringify(credentials)
  })
-   .then(data => data.json())
+ .then(data =>data.text())
+ .then(data=>{
+     if (data.length == 0){
+       return null
+     }
+     else {
+       return JSON.parse(data)
+     }
+    })
 }
 
-export default function Login({ setToken, modalActive , disableModal}) {
+export default function Login({ setToken, modalActive , disableModal, isLogin }) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const handleSubmit = async e => {
     e.preventDefault();
-    const token = await loginUser(
+    const user = await loginUser(
     {
       username: username,
       password: password
-    });
-    setToken(token);
+    }, isLogin );
+    if (user){
+      setToken(user.id);
+      disableModal()
+    }
+    else {
+      alert(isLogin ? "Wrong combination of username and password" : "Username already taken")
+    }
   }
 
   return(
@@ -33,11 +47,11 @@ export default function Login({ setToken, modalActive , disableModal}) {
         ?    <AriaModal
                 onExit={disableModal}
                 underlayStyle={{ paddingTop: '2em' }}
-                titleText="Login"
+                titleText = {isLogin ? "Login":"SignUp"}
                 >
                 <div id="demo-one-modal" className="modal">
                     <div className="modal-body">
-                    <h1 className="modal-heading">Please Log In</h1>
+                    <h1 className="modal-heading">Please {isLogin ? "Log In": "Sign Up"}</h1>
                         <form onSubmit={handleSubmit}>
                             <label>
                             <p>Username</p>

@@ -8,7 +8,7 @@ class App_Body extends Component {
                 <div className="innerBody">
                     {this.props.children}
                 </div>
-            </div>         
+            </div>
         );
     }
 }

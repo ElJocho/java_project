@@ -17,7 +17,22 @@ public class PlayerService {
         return repository.findAll();
     }
 
-    public Player saveUpdatePerson(Player player) {
-        return repository.save(player);
+    public Player signUpPerson(Player player) {
+        if (repository.existsByUsername(player.getUsername())){
+            return null;
+        }
+        else {
+            return repository.save(player);
+        }
+    }
+
+    public Player loginPerson(Player request_player){
+        Player player = repository.findByUsername(request_player.getUsername());
+        if (request_player.getPassword().equals( player.getPassword() )){
+            return player;
+        }
+        else {
+            return null;
+        }
     }
 }
