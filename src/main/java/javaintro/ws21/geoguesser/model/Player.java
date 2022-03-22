@@ -3,7 +3,7 @@ package javaintro.ws21.geoguesser.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "player")
+@Table(name = "player", schema = "imageguesser")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
