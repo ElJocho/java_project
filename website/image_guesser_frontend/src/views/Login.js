@@ -17,23 +17,23 @@ async function loginUser(credentials, isLogin) {
        return null
      }
      else {
-       return JSON.parse(data)
+       return JSON.parse(data) 
      }
     })
 }
 
-export default function Login({ setToken, modalActive , disableModal, isLogin }) {
+export default function Login({ setPlayer, modalActive , disableModal, isLogin }) {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
   const handleSubmit = async e => {
     e.preventDefault();
-    const user = await loginUser(
+    const player = await loginUser(
     {
       username: username,
       password: password
     }, isLogin );
-    if (user){
-      setToken(user.id);
+    if (player && player.playerId != undefined){
+      setPlayer(player);
       disableModal()
     }
     else {
@@ -46,8 +46,9 @@ export default function Login({ setToken, modalActive , disableModal, isLogin })
       {modalActive
         ?    <AriaModal
                 onExit={disableModal}
-                underlayStyle={{ paddingTop: '2em' }}
+                underlayStyle={{ paddingTop: '2em', zIndex: 1150 }}
                 titleText = {isLogin ? "Login":"SignUp"}
+                
                 >
                 <div id="demo-one-modal" className="modal">
                     <div className="modal-body">
@@ -74,5 +75,5 @@ export default function Login({ setToken, modalActive , disableModal, isLogin })
 }
 
 Login.propTypes = {
-  setToken: PropTypes.func.isRequired
+  setPlayer: PropTypes.func.isRequired
 };

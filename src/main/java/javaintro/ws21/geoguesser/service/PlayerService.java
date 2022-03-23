@@ -13,7 +13,7 @@ public class PlayerService {
     @Autowired
     private PlayerRepository repository;
 
-    public Iterable<Player> findAll(){
+    public List<Player> findAll(){
         return repository.findAll();
     }
 
@@ -28,11 +28,11 @@ public class PlayerService {
 
     public Player loginPerson(Player request_player){
         Player player = repository.findByUsername(request_player.getUsername());
-        if (request_player.getPassword().equals( player.getPassword() )){
-            return player;
+        if (player != null){
+            if (request_player.getPassword().equals( player.getPassword() )){
+                return player;
+            }
         }
-        else {
-            return null;
-        }
+        return null;
     }
 }

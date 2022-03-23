@@ -1,0 +1,20 @@
+.lobbyForm {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lobbyInput {
+    width: 150px;
+    height: 30px;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.lobbyLabel {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+

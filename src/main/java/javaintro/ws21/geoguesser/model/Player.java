@@ -1,23 +1,29 @@
 package javaintro.ws21.geoguesser.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "player", schema = "imageguesser")
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer playerId;
 
+    @Column(unique=true)
     private String username;
     private String password;
 
-    public Integer getId() {
-        return id;
+    @ManyToMany(mappedBy = "players")
+    private Set<Game> games = new HashSet<>();
+
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     public String getUsername() {
@@ -36,10 +42,18 @@ public class Player {
         this.password = password;
     }
 
+
+    public Set<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(Set<Game> games) {
+        this.games = games;
+    }
     @Override
     public String toString() {
         return "Player{" +
-                "id=" + id +
+                "id=" + playerId +
                 ", name='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
