@@ -1,5 +1,10 @@
 package javaintro.ws21.geoguesser.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +12,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "game", schema = "imageguesser")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +45,7 @@ public class Game {
             schema = "imageguesser",
             joinColumns = @JoinColumn(name = "gameId"),
             inverseJoinColumns = @JoinColumn(name = "playerId"))
+    @JsonIgnoreProperties("games")
     private Set<Player> players = new HashSet<>();
 
     public Integer getGameId() {

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface GameRepository extends JpaRepository<Game,Long> {
-    public List<Game> findByPlayersOrIsActive(Player player, boolean isActive);
-    //public List<Game> findByIsActive();
+public interface GameRepository extends JpaRepository<Game, Integer> {
+    public List<Game> findDistinctByPlayersOrIsActive(Player player, boolean isActive);
 }

@@ -35,7 +35,7 @@ public class GeoGuesserController {
         return gameService.createGame(game);
     }
 
-    @GetMapping(value="/get_games", produces=MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value="/get_games", produces=MediaType.APPLICATION_JSON_VALUE)
     public List<Game> getGames(@RequestBody Player player){
         return gameService.getGames(player);
     }
@@ -43,5 +43,15 @@ public class GeoGuesserController {
     @GetMapping(value="/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Player> listPlayers(){
         return playerService.findAll();
+    }
+
+    @PostMapping(value="/add_player", produces = MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    public Game addPlayer(@RequestBody Player player, @RequestParam int id) {
+        return gameService.addPlayer(player, id);
+    }
+
+    @PostMapping(value="/start_game", produces = MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    public Game startGame(@RequestBody Game game) {
+        return gameService.startGame(game);
     }
 }

@@ -156,3 +156,9 @@ Note: Beware of modifying this element as it can break the animations - you shou
 	cursor: pointer;
 	outline: inherit;
 }
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
