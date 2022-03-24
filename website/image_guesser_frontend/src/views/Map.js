@@ -52,6 +52,5 @@ const Map = props => {
         </div>
         
     );
-  
 }
 export default Map;

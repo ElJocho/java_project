@@ -7,3 +7,10 @@ spring:
     url: jdbc:postgresql://localhost:9091/imageGuesser
     username: imageGuesser
     password: imageGuesser
+  jpa:
+    generate-dll: true
+    hibernate:
+      dll-auto: create
+hibernate:
+  hbm2ddl:
+    auto: create

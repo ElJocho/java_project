@@ -1,23 +1,34 @@
 package javaintro.ws21.geoguesser.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "player", schema = "imageguesser")
+@JsonIgnoreProperties(value={"hibernateLazyInitializer", "handler"})
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Integer playerId;
 
+    @Column(unique=true)
     private String username;
     private String password;
 
-    public Integer getId() {
-        return id;
+    @ManyToMany(mappedBy = "players")
+    @JsonIgnoreProperties("players")
+    private Set<Game> games = new HashSet<>();
+
+    public Integer getPlayerId() {
+        return playerId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPlayerId(Integer playerId) {
+        this.playerId = playerId;
     }
 
     public String getUsername() {
@@ -36,10 +47,18 @@ public class Player {
         this.password = password;
     }
 
+
+    public Set<Game> getGames() {
+        return games;
+    }
+
+    public void setGames(Set<Game> games) {
+        this.games = games;
+    }
     @Override
     public String toString() {
         return "Player{" +
-                "id=" + id +
+                "id=" + playerId +
                 ", name='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';
