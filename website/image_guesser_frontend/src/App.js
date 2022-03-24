@@ -101,7 +101,7 @@ class App extends Component {
   goToLobby(e){
     console.log(e.target.getAttribute("game"))
     console.log(JSON.parse(e.target.getAttribute("game")))
-    this.setState({currentGame: JSON.parse(e.currentTarget.getAttribute("game"))}, ()=>{this.setState({screen: 'lobby'})})
+    this.setState({currentGame: JSON.parse(e.currentTarget.getAttribute("game")), screen: 'lobby'})
   }
 
   updateGame(game){
