@@ -6,6 +6,7 @@ import javaintro.ws21.geoguesser.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import javaintro.ws21.geoguesser.RestClient;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -21,6 +22,8 @@ public class GeoGuesserController {
 
     @GetMapping(value="/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public Iterable<Player> listPlayers(){
+        RestClient Client = new RestClient();
+        System.out.println(Client.get(""));
         return playerService.findAll();
     }
 }
