@@ -14,12 +14,12 @@
 # Technical
 - [ ] calculation of distance between location and guess
 - JAVA: **function** calculate_score(guess, bbox) -> full points for inside, less/decreasing for outside
-- [ ] Login completion
+- [x] Login completion
 - JS: call to backend
 - JAVA: confirm existing/correct username/passwort
-- [ ] Overview page over current and past games
+- [x] Overview page over current and past games
 - JS: Games View -> Open Lobbies, active Games, old Games
-- [ ] game creation
+- [x] game creation
 - JS: open game button
 - JS: Lobby -> host + other players, players can join, host can start. Host can determine the number of rounds (up to 20?).
 - JS: **function** update data -> get all games, compare if player already made a guess for newest city, if no, show guess view.
