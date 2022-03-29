@@ -48,10 +48,9 @@ const Map = props => {
                         ref={markerRef}>
                     </Marker>
             </MapContainer>
-            <p id='coords' style={{display:'none'}}>{`${position.lat} ${position.lng}`}</p>
+            <p id='coords' style={{display:'none', margin: '0'}}>{`${position.lat} ${position.lng}`}</p>
         </div>
         
     );
-  
 }
 export default Map;
