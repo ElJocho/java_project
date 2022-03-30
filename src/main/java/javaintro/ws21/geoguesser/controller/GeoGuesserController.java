@@ -42,6 +42,7 @@ public class GeoGuesserController {
 
     @GetMapping(value="/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Player> listPlayers(){
+
         return playerService.findAll();
     }
 

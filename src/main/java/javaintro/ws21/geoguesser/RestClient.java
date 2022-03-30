@@ -6,11 +6,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import javaintro.ws21.geoguesser.env_search;
 
 public class RestClient {
 
-
-    private String server = "https://graph.mapillary.com/images?access_token=MLY|4966815033432372|521aed7230a3de1142329014c1061d7d&fields=id&bbox=12.967,55.597,13.008,55.607&limit=3";
+    public env_search env = new env_search();
+    private String server = String.format("https://graph.mapillary.com/images?access_token=%s&fields=id&bbox=12.967,55.597,13.008,55.607&limit=3",env.getToken());
     private RestTemplate rest;
     private HttpHeaders headers;
     private HttpStatus status;
@@ -22,7 +23,7 @@ public class RestClient {
         headers.add("Accept", "*/*");
     }
 
-    public String get(String uri) {
+    public String getIDs() {
         HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
         ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.GET, requestEntity, String.class);
         this.setStatus(responseEntity.getStatusCode());

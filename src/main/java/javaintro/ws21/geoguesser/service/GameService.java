@@ -19,6 +19,10 @@ public class GameService {
         return repository.save(game);
     }
 
+    public Game setupNewRound(Game game) {
+        // random city auswählen, die noch nicht im Spiel vorhanden ist
+    }
+
     public List<Game> getGames(Player player){
         return repository.findDistinctByPlayersOrIsActive(player,false);
     }
