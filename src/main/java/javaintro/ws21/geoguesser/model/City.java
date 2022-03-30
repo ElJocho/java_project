@@ -13,6 +13,7 @@ public class City {
 
     private String name;
 
+    @Column(length=1000)
     private String geojsonBBox;
 
     @ManyToMany(mappedBy = "cities")
