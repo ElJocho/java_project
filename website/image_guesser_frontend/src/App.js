@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
 import logo from './images/world.png';
 import './App.css';
-import { slide as Menu } from 'react-burger-menu'
-import App_Body from './views/App_Body'
-import Map from './views/Map'
-import Login from './views/Login'
-import Lobby from './views/Lobby'
+import { slide as Menu } from 'react-burger-menu';
+import App_Body from './views/App_Body';
+import Login from './views/Login';
+import Lobby from './views/Lobby';
 import ScrollView from './common/ScrollView';
 import GameElement from './common/GameElement';
+import Game from './views/Game';
+
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      modalActive: false,
-      player: false,
-      screen: "menu",
-      login: null,
-      menuOpen: false,
-      openLobbies: [],
-      activeGames: [],
-      oldGames: [],
-      currentGame: undefined
-    };
-
     this.setPlayer = this.setPlayer.bind(this);
     this.disableModal = this.disableModal.bind(this);
     this.activateLogin = this.activateLogin.bind(this);
@@ -33,6 +22,31 @@ class App extends Component {
     this.loadGames = this.loadGames.bind(this)
     this.goToLobby = this.goToLobby.bind(this)
     this.updateGame = this.updateGame.bind(this)
+    this.goToGame = this.goToGame.bind(this)
+    this.getApiKey = this.getApiKey(this)
+
+    this.state = {
+      modalActive: false,
+      player: false,
+      screen: "menu",
+      login: null,
+      menuOpen: false,
+      openLobbies: [],
+      activeGames: [],
+      oldGames: [],
+      apiKey: this.getApiKey(),
+      currentGame: undefined
+    };
+
+  }
+
+  getApiKey(){
+    fetch(`http://localhost:8090/get_key`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(data => data.json()).then(data=>{this.state.apiKey = data.apiKey})
   }
 
   loadGames(e){
@@ -83,10 +97,6 @@ class App extends Component {
   }
 
 
-  onSubmitButtonClick(e){
-    let coordinates = document.getElementById("coords").innerHTML
-    console.log(coordinates)
-  }
 
   activateLogin(e){
     this.setState({login: true, modalActive:true})
@@ -99,10 +109,13 @@ class App extends Component {
     this.setState({screen: e.target.getAttribute('screen') })
   }
   goToLobby(e){
-    console.log(e.target.getAttribute("game"))
-    console.log(JSON.parse(e.target.getAttribute("game")))
     this.setState({currentGame: JSON.parse(e.currentTarget.getAttribute("game")), screen: 'lobby'})
   }
+
+  goToGame(e){
+    this.setState({currentGame: JSON.parse(e.currentTarget.getAttribute("game")), screen: 'game'})
+  }    
+
 
   updateGame(game){
     this.setState({currentGame: game})
@@ -123,7 +136,7 @@ class App extends Component {
       <App_Body>
         <button className='button_guess' onClick={this.loadGames }>Reload</button>
         <h3>Active Games.</h3>
-        <ScrollView itemList={ this.state.activeGames } ListElement={ GameElement }></ScrollView>
+        <ScrollView itemList={ this.state.activeGames } ListElement={ GameElement } onClick={ this.goToGame }></ScrollView>
         <div>
           <h3>Open Lobbies.</h3>
           <button className='button_guess' onClick={this.goToScreen } screen="lobby">Open Lobby</button>
@@ -138,14 +151,7 @@ class App extends Component {
     let lobbyScreen = <Lobby player={ this.state.player } goToScreen={ this.goToScreen } game={ this.state.currentGame } updateGame={ this.updateGame }></Lobby>
   
 
-    let gameScreen =
-    <App_Body>
-      <h3>Try to guess where you are located based on the images below, then mark your position in the map.</h3>
-      <img src={ require('./images/kyiv.jpg') } className="image_guess"/>
-      <Map>
-      </Map>
-      <button className='button_guess' onClick={this.onSubmitButtonClick}>Commit Guess</button>
-    </App_Body>
+    let gameScreen = <Game player={ this.state.player} game={ this.state.currentGame }></Game>
 
     if (this.state.player == false){
       current_screen = startScreen;
