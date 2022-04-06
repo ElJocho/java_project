@@ -56,7 +56,6 @@ public class GeoGuesserController {
         return env.getToken();
     }
 
-
     @PostMapping(value="/add_player", produces = MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
     public Game addPlayer(@RequestBody Player player, @RequestParam int id) {
         return gameService.addPlayer(player, id);

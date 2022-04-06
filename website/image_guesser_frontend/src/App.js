@@ -34,19 +34,19 @@ class App extends Component {
       openLobbies: [],
       activeGames: [],
       oldGames: [],
-      apiKey: this.getApiKey(),
+      apiKey: null,
       currentGame: undefined
     };
 
   }
 
   getApiKey(){
-    fetch(`http://localhost:8090/get_key`, {
+    /*fetch(`http://localhost:8090/get_key`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(data => data.json()).then(data=>{this.state.apiKey = data.apiKey})
+    }).then(data => data.json()).then(data=>{this.state.apiKey = data.apiKey})*/
   }
 
   loadGames(e){
