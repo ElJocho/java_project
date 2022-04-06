@@ -1,5 +1,5 @@
 package javaintro.ws21.geoguesser;
-
+/*
 import io.github.cdimascio.dotenv.Dotenv;
 import io.github.cdimascio.dotenv.DotenvException;
 
@@ -14,3 +14,4 @@ public class env_search {
         ));
     }
 }
+*/
