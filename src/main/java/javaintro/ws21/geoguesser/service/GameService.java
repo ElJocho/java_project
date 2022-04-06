@@ -18,28 +18,47 @@ public class GameService {
 
     @Autowired
     private GameRepository repository;
+
+    @Autowired
     private CityService cityService;
-    private RestClient restClient;
+
+    private final RestClient restClient = new RestClient();
 
     public Game createGame(Game game){
         return repository.save(game);
     }
 
     public Game setupNewRound(Game game) {
+        StringBuilder coordinateStringBuilder = new StringBuilder();
         City city = cityService.randomCity();
-        JSONArray IDs = new JSONArray(restClient.getIDs()); //JSONArray & JSONObject -->
-        // wir brauchen coordinates von geojsonbbox von city
-        // die Koordinaten liegen in geometry in der geojsonbbox
-        final JSONObject obj = new JSONObject(city);
-        final JSONArray geodata = obj.getJSONArray("geoboundingbox");
-        final int n = IDs.length();
-        for (int i = 0; i < n; ++i) {
-            JSONObject person = geodata.getJSONObject(i);
-            System.out.println(person.getJSONArray("geometry"));
-            repository.save(game);
-            return game;
+
+        JSONObject feature = new JSONObject(city.getGeojsonBBox());
+        JSONArray coordinates = feature.getJSONObject("geometry").getJSONArray("coordinates").getJSONArray(0);
+        for (int i = 0; i < coordinates.length(); ++i) {
+            if (i == 0 | i == 2){
+                JSONArray xy = coordinates.getJSONArray(i);
+                for (int c=0; c<xy.length(); c++){
+                    String element = String.valueOf(xy.getFloat(c));
+                    coordinateStringBuilder.append(element).append(",");
+                }
+            }
         }
-        return null;
+        coordinateStringBuilder.deleteCharAt(coordinateStringBuilder.length() - 1);;
+        String coordinateString = coordinateStringBuilder.toString();
+        JSONArray answer = new JSONObject(restClient.getIDs(coordinateString)).getJSONArray("data");
+
+        List<Long> images = game.getImages();
+
+        for (int i = 0; i< answer.length(); i++){
+            long id = Long.parseLong(answer.getJSONObject(i).getString("id"));
+            images.add(id);
+        }
+        game.setImages(images);
+        Set<City> cities = game.getCities();
+        cities.add(city);
+        game.setCities(cities);
+        repository.save(game);
+        return game;
     }
 
     public List<Game> getGames(Player player){
@@ -63,7 +82,8 @@ public class GameService {
 
     public Game startGame(Game game){
         game.setActive(true);
-        return repository.save(game);
+        game = setupNewRound(game);
+        return game;
     }
 
 }

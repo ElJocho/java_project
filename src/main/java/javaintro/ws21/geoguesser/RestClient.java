@@ -11,7 +11,7 @@ import javaintro.ws21.geoguesser.env_search;
 public class RestClient {
 
     public env_search env = new env_search();
-    private String server = String.format("https://graph.mapillary.com/images?access_token=%s&fields=id&bbox=12.967,55.597,13.008,55.607&limit=3",env.getToken());
+    private String server = String.format("https://graph.mapillary.com/images?access_token=%s&fields=id&limit=3",env.getToken());
     private RestTemplate rest;
     private HttpHeaders headers;
     private HttpStatus status;
@@ -24,10 +24,14 @@ public class RestClient {
     }
 
     public String getIDs(String IDs) {
+        String bboxString = "&bbox=" + IDs;
+        String url = server + bboxString;
         HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
-        ResponseEntity<String> responseEntity = rest.exchange(server, HttpMethod.GET, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = rest.exchange(url, HttpMethod.GET, requestEntity, String.class);
         this.setStatus(responseEntity.getStatusCode());
-        return responseEntity.getBody();
+        String response = responseEntity.getBody();
+        System.out.println(response);
+        return response;
     }
 
     public HttpStatus getStatus() {
