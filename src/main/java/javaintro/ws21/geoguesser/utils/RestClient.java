@@ -1,4 +1,4 @@
-package javaintro.ws21.geoguesser;
+package javaintro.ws21.geoguesser.utils;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -6,11 +6,11 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import javaintro.ws21.geoguesser.env_search;
+import javaintro.ws21.geoguesser.utils.EnvironmentGetter;
 
 public class RestClient {
 
-    public env_search env = new env_search();
+    public EnvironmentGetter env = new EnvironmentGetter();
     private String server = String.format("https://graph.mapillary.com/images?access_token=%s&fields=id&limit=3",env.getToken());
     private RestTemplate rest;
     private HttpHeaders headers;

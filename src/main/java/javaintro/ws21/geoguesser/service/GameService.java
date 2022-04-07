@@ -1,6 +1,6 @@
 package javaintro.ws21.geoguesser.service;
 
-import javaintro.ws21.geoguesser.RestClient;
+import javaintro.ws21.geoguesser.utils.RestClient;
 import javaintro.ws21.geoguesser.model.City;
 import javaintro.ws21.geoguesser.model.Game;
 import javaintro.ws21.geoguesser.model.Player;

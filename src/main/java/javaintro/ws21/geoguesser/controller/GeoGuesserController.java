@@ -1,13 +1,12 @@
 package javaintro.ws21.geoguesser.controller;
 
-import javaintro.ws21.geoguesser.env_search;
+import javaintro.ws21.geoguesser.utils.EnvironmentGetter;
 import javaintro.ws21.geoguesser.model.Game;
 import javaintro.ws21.geoguesser.model.Player;
 import javaintro.ws21.geoguesser.service.GameService;
 import javaintro.ws21.geoguesser.service.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class GeoGuesserController {
     @Autowired
     private GameService gameService;
 
-    private final env_search env = new env_search();
+    private final EnvironmentGetter env = new EnvironmentGetter();
 
 
     @PostMapping(value="/create_player", produces= MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
