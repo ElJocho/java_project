@@ -11,10 +11,10 @@ public class City {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private String name;
-
     @Column(length=1000)
     private String geojsonBBox;
+
+    private String name;
 
     @ManyToMany(mappedBy = "cities")
     private Set<Game> games = new HashSet<>();
@@ -50,4 +50,12 @@ public class City {
     public void setGeojsonBBox(String geojsonBBox) {
         this.geojsonBBox = geojsonBBox;
     }
+
+    @Override
+    public String toString() {
+        return "City{" +
+                "id=" + id +
+                ", name='" + name + "'}";
+    }
+
 }

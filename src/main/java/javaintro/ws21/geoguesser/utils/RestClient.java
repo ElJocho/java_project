@@ -1,4 +1,4 @@
-package javaintro.ws21.geoguesser;
+package javaintro.ws21.geoguesser.utils;
 
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -6,11 +6,12 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import javaintro.ws21.geoguesser.utils.EnvironmentGetter;
 
 public class RestClient {
 
-
-    private String server = "https://graph.mapillary.com/images?access_token=MLY|4966815033432372|521aed7230a3de1142329014c1061d7d&fields=id&bbox=12.967,55.597,13.008,55.607&limit=3";
+    public EnvironmentGetter env = new EnvironmentGetter();
+    private String server = String.format("https://graph.mapillary.com/images?access_token=%s&fields=id&limit=3",env.getToken());
     private RestTemplate rest;
     private HttpHeaders headers;
     private HttpStatus status;
@@ -22,11 +23,15 @@ public class RestClient {
         headers.add("Accept", "*/*");
     }
 
-    public String get(String uri) {
+    public String getIDs(String IDs) {
+        String bboxString = "&bbox=" + IDs;
+        String url = server + bboxString;
         HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
-        ResponseEntity<String> responseEntity = rest.exchange(server + uri, HttpMethod.GET, requestEntity, String.class);
+        ResponseEntity<String> responseEntity = rest.exchange(url, HttpMethod.GET, requestEntity, String.class);
         this.setStatus(responseEntity.getStatusCode());
-        return responseEntity.getBody();
+        String response = responseEntity.getBody();
+        System.out.println(response);
+        return response;
     }
 
     public HttpStatus getStatus() {

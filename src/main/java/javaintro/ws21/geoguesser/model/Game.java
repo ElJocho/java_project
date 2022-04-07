@@ -26,7 +26,7 @@ public class Game {
     private boolean isActive;
 
     @ElementCollection
-    private List<Integer> images;
+    private List<Long> images;
 
     @ElementCollection
     private List<Float> Points;
@@ -37,6 +37,7 @@ public class Game {
             schema = "imageguesser",
             joinColumns = @JoinColumn(name = "cityId"),
             inverseJoinColumns = @JoinColumn(name = "gameId"))
+    @JsonIgnoreProperties("games")
     private Set<City> cities = new HashSet<>();
 
     @ManyToMany
@@ -104,11 +105,11 @@ public class Game {
         this.ownerId = ownerId;
     }
 
-    public List<Integer> getImages() {
+    public List<Long> getImages() {
         return images;
     }
 
-    public void setImages(List<Integer> images) {
+    public void setImages(List<Long> images) {
         this.images = images;
     }
 

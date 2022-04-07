@@ -1,5 +1,6 @@
 package javaintro.ws21.geoguesser.controller;
 
+import javaintro.ws21.geoguesser.utils.EnvironmentGetter;
 import javaintro.ws21.geoguesser.model.Game;
 import javaintro.ws21.geoguesser.model.Player;
 import javaintro.ws21.geoguesser.service.GameService;
@@ -19,6 +20,9 @@ public class GeoGuesserController {
 
     @Autowired
     private GameService gameService;
+
+    private final EnvironmentGetter env = new EnvironmentGetter();
+
 
     @PostMapping(value="/create_player", produces= MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
     public Player createPlayer(@RequestBody Player player){
@@ -43,6 +47,12 @@ public class GeoGuesserController {
     @GetMapping(value="/list", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Player> listPlayers(){
         return playerService.findAll();
+    }
+
+    @GetMapping(value="/get_key", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String get_key(){
+        return env.getToken();
     }
 
     @PostMapping(value="/add_player", produces = MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
