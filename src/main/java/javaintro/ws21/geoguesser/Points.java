@@ -2,18 +2,38 @@ package javaintro.ws21.geoguesser;
 
 // Code from https://www.geodatasource.com/developers/java
 
+import javaintro.ws21.geoguesser.model.Game;
+
 import java.util.Arrays;
 
 public class Points {
     private static Object LatLong;
     public static void main (String[] args) throws java.lang.Exception
     {
-        System.out.println(distance(31.9697, -96.8032, 29.4678, -98.5351, "K") + " Kilometers = Distance from two points\n");
-        System.out.println(Arrays.toString(centroid(31.9697, -96.8032, 29.4676, -98.5331)) + " = Coordinates of bbox centroid");
         double[] centroidCoordinates = centroid(31.9697, -96.8032, 29.4676, -98.5331);
-        System.out.println(distance(31.9697, -96.8032, centroidCoordinates[0], centroidCoordinates[1], "K") + " Kilometers = Distance from point to bbox centroid\n");
+        double DistanceofPoints = (distance(31.9697, -96.8032, centroidCoordinates[0], centroidCoordinates[1]));
+        System.out.println("You have " + CalculatePointsofGame(DistanceofPoints) + " points");
     }
-    private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
+    private static int CalculatePointsofGame(double DistancetoCentroid) {
+        int GamePoints = 0;
+        if (DistancetoCentroid < 20){
+            GamePoints = 100;
+        }
+        else if (DistancetoCentroid > 20 && DistancetoCentroid < 50){
+            GamePoints = 50;
+        }
+        else if (DistancetoCentroid > 50 && DistancetoCentroid < 100){
+            GamePoints = 25;
+        }
+        else if (DistancetoCentroid > 100 && DistancetoCentroid < 500){
+            GamePoints = 10;
+        }
+        else if (DistancetoCentroid > 500){
+            GamePoints = 0;
+        }
+        return GamePoints;
+    }
+    private static double distance(double lat1, double lon1, double lat2, double lon2) {
         if ((lat1 == lat2) && (lon1 == lon2)) {
             return 0;
         }
@@ -23,11 +43,7 @@ public class Points {
             dist = Math.acos(dist);
             dist = Math.toDegrees(dist);
             dist = dist * 60 * 1.1515;
-            if (unit.equals("K")) {
-                dist = dist * 1.609344;
-            } else if (unit.equals("N")) {
-                dist = dist * 0.8684;
-            }
+            dist = dist * 1.609344;
             return (dist);
         }
     }
