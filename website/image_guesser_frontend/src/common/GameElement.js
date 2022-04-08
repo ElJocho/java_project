@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import '../css/listElement.css';
 
 
-export default function GameElement({ element, onClick }) {
+export default function GameElement({ element, onClick, screen }) {
     
     return(
-      <div className='listElement' game={ JSON.stringify(element) } onClick= { onClick }>
+      <div className='listElement' game={ JSON.stringify(element) } onClick= { onClick } screen={ screen }>
         <p className='elementName'>
           { element.name }
         </p>

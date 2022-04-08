@@ -30,7 +30,6 @@ public class RestClient {
         ResponseEntity<String> responseEntity = rest.exchange(url, HttpMethod.GET, requestEntity, String.class);
         this.setStatus(responseEntity.getStatusCode());
         String response = responseEntity.getBody();
-        System.out.println(response);
         return response;
     }
 

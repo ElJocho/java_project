@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class GameService {
@@ -22,6 +21,9 @@ public class GameService {
     @Autowired
     private CityService cityService;
 
+    @Autowired
+    private PlayerService playerService;
+
     private final RestClient restClient = new RestClient();
 
     public Game createGame(Game game){
@@ -30,8 +32,17 @@ public class GameService {
 
     public Game setupNewRound(Game game) {
         StringBuilder coordinateStringBuilder = new StringBuilder();
-        City city = cityService.randomCity();
 
+        // get city and convert bbox to format mapillary requires
+        Set<City> cities = game.getCities();
+        List<Integer> alreadyUsedCityIds = new ArrayList<>();
+
+        cities.forEach(city -> {alreadyUsedCityIds.add(city.getId());});
+
+        // prevents bug where randomCity returns null when alreadyUsedCityIds is empty
+        alreadyUsedCityIds.add(-1);
+
+        City city = cityService.randomCity(alreadyUsedCityIds);
         JSONObject feature = new JSONObject(city.getGeojsonBBox());
         JSONArray coordinates = feature.getJSONObject("geometry").getJSONArray("coordinates").getJSONArray(0);
         for (int i = 0; i < coordinates.length(); ++i) {
@@ -45,20 +56,31 @@ public class GameService {
         }
         coordinateStringBuilder.deleteCharAt(coordinateStringBuilder.length() - 1);;
         String coordinateString = coordinateStringBuilder.toString();
+
+        // request image ids with bbox string and save them to game
         JSONArray answer = new JSONObject(restClient.getIDs(coordinateString)).getJSONArray("data");
 
         List<Long> images = game.getImages();
-
         for (int i = 0; i< answer.length(); i++){
             long id = Long.parseLong(answer.getJSONObject(i).getString("id"));
             images.add(id);
         }
         game.setImages(images);
-        Set<City> cities = game.getCities();
+
+        // add city to cities list
         cities.add(city);
         game.setCities(cities);
-        repository.save(game);
-        return game;
+
+        // setup point list for next round
+        int num_player = game.getPlayers().size();
+        List<Float> points = game.getPoints();
+        for (int i = 0; i < num_player; i++){
+            points.add(-1.f);
+        }
+        game.setPoints(points);
+
+        // save changes to db and return updated game
+        return repository.save(game);
     }
 
     public List<Game> getGames(Player player){
@@ -71,8 +93,7 @@ public class GameService {
         if (players.size() < game.getMaxPlayers() & player != null){
             players.add(player);
             game.setPlayers(players);
-            repository.save(game);
-            return game;
+            return repository.save(game);
         }
         return null;
     }
@@ -86,4 +107,34 @@ public class GameService {
         return game;
     }
 
+    public Game commitGuess(Game game, int player_id, float x, float y){
+        Player player = playerService.getById(player_id);
+        int currentRound = game.getCities().size();
+
+        // check for location of playerid in player list
+        List<Player> players = new ArrayList<>(game.getPlayers());
+        int num_players = players.size();
+        int position_current_player = 0;
+        for (int i = 0; i<num_players; i++){
+            if (players.get(i).getPlayerId().equals(player.getPlayerId())){
+                position_current_player = i;
+            }
+        }
+
+        int index_of_current_player_and_round = (currentRound-1)*(num_players) + position_current_player;
+        List<Float> points = game.getPoints();
+
+        // instead of 2.5 call point function here with x,y and city bbox input
+        // if clause prevents cheating/bugs/correcting guesses
+        if (points.get(index_of_current_player_and_round).equals(-1f)){
+            points.set(index_of_current_player_and_round, 2.5f);
+        }
+        game.setPoints(points);
+        repository.save(game);
+
+        if (! points.contains(-1.f) & currentRound != game.getRounds()){
+            game = setupNewRound(game);
+        }
+        return game;
+    }
 }

@@ -5,6 +5,9 @@ import ScrollView from '../common/ScrollView';
 import PlayerElement from '../common/PlayerElement';
 import Map from './Map';
 import Mapillary from '../common/Mapillary'
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from 'react-responsive-carousel';
+
 
 async function createLobby(setupData){
     return fetch(`http://localhost:8090/create_game`, {
@@ -17,11 +20,21 @@ async function createLobby(setupData){
 }
 
 
-export default function Game({ player, goToScreen, game , updateGame}) {
+export default function Game({ player, goToScreenAndChangeGame, game , updateGame, apiKey}) {
     const onSubmitButtonClick = (e) => {
-        let coordinates = document.getElementById("coords").innerHTML
-        console.log(coordinates)
-      }
+        let coordinates = document.getElementById("coords").innerHTML.split(' ')
+
+        return fetch(`http://localhost:8090/commit_guess?player_id=${player.playerId}&x=${coordinates[0]}&y=${coordinates[1]}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(game)
+          }).then(data => data.json()).then(data=> {
+                console.log(data);
+                updateGame(data);
+            })
+    }
     
     let player_ids = [];
     if (game !== undefined){
@@ -29,14 +42,20 @@ export default function Game({ player, goToScreen, game , updateGame}) {
             player_ids.push(p.playerId)
         }
     }
+    console.log(game.images)
+    
+
     return (
         <App_Body>
-            <button className="backButton" onClick={ goToScreen } screen='menu'></button>
+            <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
             <ScrollView ListElement={ PlayerElement } itemList={ game.players }></ScrollView>
-            <h3>Try to guess where you are located based on the images below, then mark your position in the map.</h3>
-            <Mapillary accessToken={'MLY|4966815033432372|521aed7230a3de1142329014c1061d7d'} imageId={34251232}></Mapillary>
+            <h3>Try to guess where you are located, then mark your position in the map.</h3>
+            <Carousel className="Map_Carousel" infiniteLoop={true} showStatus={false}>
+                <Mapillary accessToken={ apiKey } imageId={game.images.at(-3)}></Mapillary>
+                <Mapillary accessToken={ apiKey } imageId={game.images.at(-2)}></Mapillary>
+                <Mapillary accessToken={ apiKey } imageId={game.images.at(-1)}></Mapillary>
+            </Carousel>
             
-            <img src={ require('../images/kyiv.jpg') } className="image_guess"/>
             <Map>
             </Map>
             <button className='button_guess' onClick={ onSubmitButtonClick }>Commit Guess</button>
