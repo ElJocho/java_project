@@ -36,7 +36,7 @@ async function startGame(game){
 }
 
 
-export default function Lobby({ player, goToScreen, game , updateGame}) {
+export default function Lobby({ player, goToScreenAndChangeGame, game , updateGame}) {
     const [name, setName] = useState();
     const [rounds, setRounds] = useState();
     const [maxPlayers, setMaxPlayers] = useState();
@@ -69,7 +69,13 @@ export default function Lobby({ player, goToScreen, game , updateGame}) {
 
     const handleStartGame = async e => {
         await startGame(game).then(
-            game_data=> updateGame(game_data)
+            game_data=> {
+                // hey its ugly, but it works :P
+                updateGame(game_data)
+                e.currentTarget = e.target
+                e.currentTarget.setAttribute("game", JSON.stringify(game_data))
+                goToScreenAndChangeGame(e)        
+            }
         )
     }    
 
@@ -87,11 +93,10 @@ export default function Lobby({ player, goToScreen, game , updateGame}) {
     }
     return (
         
-        <div>
+        <App_Body>
+            <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
             {
                 game === undefined ? 
-                <App_Body>
-                    <button className="backButton" onClick={ goToScreen } screen='menu'></button>
                     <form className='lobbyForm' onSubmit={ handleSubmit }>
                         <label className='lobbyLabel'>
                             <p>Lobby Name:</p>
@@ -108,23 +113,20 @@ export default function Lobby({ player, goToScreen, game , updateGame}) {
 
                         <input type="submit" value="Submit" className="button_guess"/>
                     </form>
-                </App_Body>
                 :
-                <App_Body>
-                    <button className="backButton" onClick={ goToScreen } screen='menu'></button>
-                    <ScrollView ListElement={ PlayerElement } itemList={ game.players }></ScrollView>
-                    {
-                        game.ownerId === player.playerId ?
-                        <button className='button_guess' onClick={ handleStartGame }>Start Game</button>
-                        :
-                        !player_ids.includes(player.playerId) ?
-                        <button className='button_guess' onClick={ handleAddPlayer }>Join Game</button>
-                        : <p>You are already part of this Game.</p>
-                    }
-                </App_Body>
-
+                    <div>
+                        <ScrollView ListElement={ PlayerElement } itemList={ game.players }></ScrollView>
+                        {
+                            game.ownerId === player.playerId ?
+                            <button className='button_guess' onClick={ handleStartGame } screen="game">Start Game</button>
+                            :
+                            !player_ids.includes(player.playerId) ?
+                            <button className='button_guess' onClick={ handleAddPlayer }>Join Game</button>
+                            : <p>You are already part of this Game.</p>
+                        }
+                    </div>
             }
-        </div>
+        </App_Body>
     );
 
 }

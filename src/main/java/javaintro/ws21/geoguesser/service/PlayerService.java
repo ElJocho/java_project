@@ -35,4 +35,9 @@ public class PlayerService {
         }
         return null;
     }
+
+    Player getById(int player_id){
+        return repository.getById(player_id);
+    }
+
 }

@@ -9,21 +9,10 @@ import ScrollView from './common/ScrollView';
 import GameElement from './common/GameElement';
 import Game from './views/Game';
 
-
 class App extends Component {
   constructor(props) {
     super(props);
-    this.setPlayer = this.setPlayer.bind(this);
-    this.disableModal = this.disableModal.bind(this);
-    this.activateLogin = this.activateLogin.bind(this);
-    this.activateSignUp = this.activateSignUp.bind(this);
-    this.logOut = this.logOut.bind(this)
-    this.goToScreen = this.goToScreen.bind(this)
-    this.loadGames = this.loadGames.bind(this)
-    this.goToLobby = this.goToLobby.bind(this)
-    this.updateGame = this.updateGame.bind(this)
-    this.goToGame = this.goToGame.bind(this)
-    this.getApiKey = this.getApiKey(this)
+
 
     this.state = {
       modalActive: false,
@@ -37,16 +26,31 @@ class App extends Component {
       apiKey: null,
       currentGame: undefined
     };
-
+    this.setPlayer = this.setPlayer.bind(this);
+    this.disableModal = this.disableModal.bind(this);
+    this.activateLogin = this.activateLogin.bind(this);
+    this.activateSignUp = this.activateSignUp.bind(this);
+    this.logOut = this.logOut.bind(this)
+    this.loadGames = this.loadGames.bind(this)
+    this.goToLobby = this.goToLobby.bind(this)
+    this.updateGame = this.updateGame.bind(this)
+    this.getApiKey = this.getApiKey.bind(this)
+    this.goToScreenAndChangeGame = this.goToScreenAndChangeGame.bind(this)
   }
 
+  componentWillMount() {
+    this.getApiKey();
+
+  }
   getApiKey(){
-    /*fetch(`http://localhost:8090/get_key`, {
+    fetch(`http://localhost:8090/get_key`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
-    }).then(data => data.json()).then(data=>{this.state.apiKey = data.apiKey})*/
+    }).then(data => data.text()).then(
+        data=>{this.state.apiKey = data}
+      )
   }
 
   loadGames(e){
@@ -57,7 +61,6 @@ class App extends Component {
       },
       body: JSON.stringify(this.state.player)
     }).then(data => data.json()).then( games =>{
-      console.log(games)
 
       let openLobbies = [];
       let activeGames = [];
@@ -96,8 +99,6 @@ class App extends Component {
     this.setState({modalActive: false})
   }
 
-
-
   activateLogin(e){
     this.setState({login: true, modalActive:true})
   }
@@ -105,17 +106,23 @@ class App extends Component {
   activateSignUp(e){
     this.setState({login: false, modalActive:true})
   }
-  goToScreen(e){
-    this.setState({screen: e.target.getAttribute('screen') })
+
+  goToScreenAndChangeGame(e){
+    let nextGame = undefined
+
+    if (! (e.currentTarget.getAttribute('game') === null)){
+      nextGame = JSON.parse(e.currentTarget.getAttribute('game'))
+    }
+
+    this.setState({
+      screen: e.currentTarget.getAttribute('screen'),
+      currentGame: nextGame
+    })
   }
+
   goToLobby(e){
     this.setState({currentGame: JSON.parse(e.currentTarget.getAttribute("game")), screen: 'lobby'})
   }
-
-  goToGame(e){
-    this.setState({currentGame: JSON.parse(e.currentTarget.getAttribute("game")), screen: 'game'})
-  }    
-
 
   updateGame(game){
     this.setState({currentGame: game})
@@ -136,11 +143,11 @@ class App extends Component {
       <App_Body>
         <button className='button_guess' onClick={this.loadGames }>Reload</button>
         <h3>Active Games.</h3>
-        <ScrollView itemList={ this.state.activeGames } ListElement={ GameElement } onClick={ this.goToGame }></ScrollView>
+        <ScrollView itemList={ this.state.activeGames } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame} screen="game"></ScrollView>
         <div>
           <h3>Open Lobbies.</h3>
-          <button className='button_guess' onClick={this.goToScreen } screen="lobby">Open Lobby</button>
-          <ScrollView itemList={ this.state.openLobbies } ListElement={ GameElement } onClick={ this.goToLobby }></ScrollView>
+          <button className='button_guess' onClick={this.goToScreenAndChangeGame } currentGame={ null } screen='lobby'>Open Lobby</button>
+          <ScrollView itemList={ this.state.openLobbies } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame } screen="lobby"></ScrollView>
         </div>
 
         <h3>Old Games.</h3>
@@ -148,10 +155,10 @@ class App extends Component {
 
       </App_Body>
     
-    let lobbyScreen = <Lobby player={ this.state.player } goToScreen={ this.goToScreen } game={ this.state.currentGame } updateGame={ this.updateGame }></Lobby>
+    let lobbyScreen = <Lobby player={ this.state.player } goToScreenAndChangeGame={ this.goToScreenAndChangeGame } game={ this.state.currentGame } updateGame={ this.updateGame }></Lobby>
   
 
-    let gameScreen = <Game player={ this.state.player} game={ this.state.currentGame }></Game>
+    let gameScreen = <Game player={ this.state.player} game={ this.state.currentGame } apiKey={ this.state.apiKey } goToScreenAndChangeGame={ this.goToScreenAndChangeGame } updateGame={this.updateGame}></Game>
 
     if (this.state.player == false){
       current_screen = startScreen;

@@ -64,4 +64,9 @@ public class GeoGuesserController {
     public Game startGame(@RequestBody Game game) {
         return gameService.startGame(game);
     }
+
+    @PostMapping(value="/commit_guess", produces = MediaType.APPLICATION_JSON_VALUE, consumes=MediaType.APPLICATION_JSON_VALUE)
+    public Game commitGuess(@RequestBody Game game, @RequestParam int player_id, @RequestParam float x, @RequestParam float y){
+        return gameService.commitGuess(game, player_id, x, y);
+    }
 }
