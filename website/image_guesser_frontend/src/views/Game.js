@@ -31,7 +31,6 @@ export default function Game({ player, goToScreenAndChangeGame, game , updateGam
             },
             body: JSON.stringify(game)
           }).then(data => data.json()).then(data=> {
-                console.log(data);
                 updateGame(data);
             })
     }
@@ -42,8 +41,6 @@ export default function Game({ player, goToScreenAndChangeGame, game , updateGam
             player_ids.push(p.playerId)
         }
     }
-    console.log(game.images)
-    
 
     return (
         <App_Body>
