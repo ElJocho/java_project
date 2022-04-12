@@ -1,7 +1,28 @@
-.scrollView{
+.collapseList{
+    
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 100%;
     align-items: center;
+    transition: height 1s;
 }
+
+
+
+.headingContainer { 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 80%;
+    align-items: center;
+    border: 1px solid rgb(73, 89, 163);
+    border-radius: 15px;
+    margin: 10px auto;
+    background-color: #8fbac9;
+
+}
+
+.headingContainer:hover {
+    background-color: #7ab1c5;
+}    

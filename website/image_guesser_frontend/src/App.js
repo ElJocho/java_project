@@ -142,16 +142,12 @@ class App extends Component {
     let menuSceen = 
       <App_Body>
         <button className='button_guess' onClick={this.loadGames }>Reload</button>
-        <h3>Active Games.</h3>
-        <ScrollView itemList={ this.state.activeGames } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame} screen="game"></ScrollView>
+        <ScrollView heading="Active Games" itemList={ this.state.activeGames } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame} screen="game"></ScrollView>
         <div>
-          <h3>Open Lobbies.</h3>
+          <ScrollView heading="Open Lobbies" itemList={ this.state.openLobbies } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame } screen="lobby"></ScrollView>
           <button className='button_guess' onClick={this.goToScreenAndChangeGame } currentGame={ null } screen='lobby'>Open Lobby</button>
-          <ScrollView itemList={ this.state.openLobbies } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame } screen="lobby"></ScrollView>
         </div>
-
-        <h3>Old Games.</h3>
-        <ScrollView itemList={ this.state.oldGames } ListElement={ GameElement }></ScrollView>
+        <ScrollView heading="Old Games" itemList={ this.state.oldGames } ListElement={ GameElement }></ScrollView>
 
       </App_Body>
     

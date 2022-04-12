@@ -44,18 +44,21 @@ export default function Game({ player, goToScreenAndChangeGame, game , updateGam
 
     return (
         <App_Body>
-            <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
-            <ScrollView ListElement={ PlayerElement } itemList={ game.players }></ScrollView>
-            <h3>Try to guess where you are located, then mark your position in the map.</h3>
-            <Carousel className="Map_Carousel" infiniteLoop={true} showStatus={false}>
-                <Mapillary accessToken={ apiKey } imageId={game.images.at(-3)}></Mapillary>
-                <Mapillary accessToken={ apiKey } imageId={game.images.at(-2)}></Mapillary>
-                <Mapillary accessToken={ apiKey } imageId={game.images.at(-1)}></Mapillary>
-            </Carousel>
             
-            <Map>
-            </Map>
-            <button className='button_guess' onClick={ onSubmitButtonClick }>Commit Guess</button>
+            <div>
+                <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
+                <ScrollView ListElement={ PlayerElement } itemList={ game.players }></ScrollView>
+                <h3>Try to guess where you are located, then mark your position in the map.</h3>
+                <Carousel className="Map_Carousel" infiniteLoop={true} showStatus={false}>
+                    <Mapillary accessToken={ apiKey } imageId={game.images.at(-3)}></Mapillary>
+                    <Mapillary accessToken={ apiKey } imageId={game.images.at(-2)}></Mapillary>
+                    <Mapillary accessToken={ apiKey } imageId={game.images.at(-1)}></Mapillary>
+                </Carousel>
+                
+                <Map>
+                </Map>
+                <button className='button_guess' onClick={ onSubmitButtonClick }>Commit Guess</button>
+            </div>
 
         </App_Body>
             
