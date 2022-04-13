@@ -49,7 +49,10 @@ class App extends Component {
         'Content-Type': 'application/json'
       }
     }).then(data => data.text()).then(
-        data=>{this.state.apiKey = data}
+        data=>{
+          this.state.apiKey = data
+          console.log(this.state.apiKey)
+        }
       )
   }
 

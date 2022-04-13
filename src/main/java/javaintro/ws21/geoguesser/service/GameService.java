@@ -1,5 +1,6 @@
 package javaintro.ws21.geoguesser.service;
 
+import javaintro.ws21.geoguesser.utils.PointCalculator;
 import javaintro.ws21.geoguesser.utils.RestClient;
 import javaintro.ws21.geoguesser.model.City;
 import javaintro.ws21.geoguesser.model.Game;
@@ -25,6 +26,8 @@ public class GameService {
     private PlayerService playerService;
 
     private final RestClient restClient = new RestClient();
+
+    private final PointCalculator pointCalculator = new PointCalculator();
 
     public Game createGame(Game game){
         return repository.save(game);
@@ -126,8 +129,9 @@ public class GameService {
 
         // instead of 2.5 call point function here with x,y and city bbox input
         // if clause prevents cheating/bugs/correcting guesses
+        String bbox = new ArrayList<City>(game.getCities()).get(currentRound-1).getGeojsonBBox();
         if (points.get(index_of_current_player_and_round).equals(-1f)){
-            points.set(index_of_current_player_and_round, 2.5f);
+            points.set(index_of_current_player_and_round, pointCalculator.calculate(x,y, bbox));
         }
         game.setPoints(points);
         repository.save(game);

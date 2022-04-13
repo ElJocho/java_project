@@ -20,7 +20,7 @@ public class Player {
     private String password;
 
     @ManyToMany(mappedBy = "players")
-    @JsonIgnoreProperties("players")
+    @JsonIgnoreProperties({"players", "images", "cities"})
     private Set<Game> games = new HashSet<>();
 
     public Integer getPlayerId() {

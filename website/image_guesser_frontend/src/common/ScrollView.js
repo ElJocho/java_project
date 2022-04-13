@@ -5,7 +5,8 @@ import '../css/scrollView.css';
 export default function ScrollView({ itemList, onClick, ListElement, screen, heading }) {
       const [isCollapsed, setCollapsed] = useState(true)
 
-      const toggleCollapse = (e) => {
+     const toggleCollapse = (e) => {
+        /*
         collapseList = document.getElementById("collapseList")
         console.log(collapseList)
         if (isCollapsed) {
@@ -15,7 +16,7 @@ export default function ScrollView({ itemList, onClick, ListElement, screen, hea
         else {
           collapseList.style.setAttribute("display","none");
           setCollapsed(true)
-        }
+        }*/
       }
       return(
       <div className="scrollView">
