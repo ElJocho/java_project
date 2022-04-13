@@ -41,13 +41,25 @@ export default function Game({ player, goToScreenAndChangeGame, game , updateGam
             player_ids.push(p.playerId)
         }
     }
+    let points = null;
+    
+    if (game.cities.length>1){
+        let point_clone = JSON.parse(JSON.stringify(game.points))
+        let no_players = game.players.length;
+        points = new Array(no_players).fill(0);
+        while(point_clone>game.players.length){
+            for (let x = 0; x<game.players.length; x++){
+                points[x] += point_clone.shift()
+            }
+        }
+    }
 
     return (
         <App_Body>
             
             <div>
                 <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
-                <ScrollView ListElement={ PlayerElement } itemList={ game.players }></ScrollView>
+                <ScrollView ListElement={ PlayerElement } itemList={ game.players } heading="Players" points={ points }></ScrollView>
                 <h3>Try to guess where you are located, then mark your position in the map.</h3>
                 <Carousel className="Map_Carousel" infiniteLoop={true} showStatus={false}>
                     <Mapillary accessToken={ apiKey } imageId={game.images.at(-3)}></Mapillary>

@@ -6,7 +6,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import javaintro.ws21.geoguesser.utils.EnvironmentGetter;
 
 public class RestClient {
 

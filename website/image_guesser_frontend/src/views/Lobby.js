@@ -115,7 +115,11 @@ export default function Lobby({ player, goToScreenAndChangeGame, game , updateGa
                     </form>
                 :
                     <div>
-                        <ScrollView ListElement={ PlayerElement } itemList={ game.players }></ScrollView>
+                        <h3>Lobby "{ game.name }" started by { game.players[0].username }</h3>
+                        <h3>Max Players: {game.maxPlayers}</h3>
+                        <h3>Rounds: { game.rounds }</h3>
+
+                        <ScrollView ListElement={ PlayerElement } itemList={ game.players } heading="Players"></ScrollView>
                         {
                             game.ownerId === player.playerId ?
                             <button className='button_guess' onClick={ handleStartGame } screen="game">Start Game</button>
