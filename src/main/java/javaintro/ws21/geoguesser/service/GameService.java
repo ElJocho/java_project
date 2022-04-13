@@ -47,7 +47,8 @@ public class GameService {
 
         City city = cityService.randomCity(alreadyUsedCityIds);
         JSONObject feature = new JSONObject(city.getGeojsonBBox());
-        JSONArray coordinates = feature.getJSONObject("geometry").getJSONArray("coordinates").getJSONArray(0);
+        JSONArray coordinates = feature.getJSONArray("coordinates").getJSONArray(0);
+        System.out.println(coordinates);
         for (int i = 0; i < coordinates.length(); ++i) {
             if (i == 0 | i == 2){
                 JSONArray xy = coordinates.getJSONArray(i);
@@ -62,6 +63,7 @@ public class GameService {
 
         // request image ids with bbox string and save them to game
         JSONArray answer = new JSONObject(restClient.getIDs(coordinateString)).getJSONArray("data");
+        System.out.println(answer);
 
         List<Long> images = game.getImages();
         for (int i = 0; i< answer.length(); i++){

@@ -2,7 +2,7 @@ server:
   port: 8090
 spring:
   datasource:
-    initialization-mode: always
+    sql.init.mode: always
     platform: postgres
     url: jdbc:postgresql://localhost:9091/imageGuesser
     username: imageGuesser
@@ -10,7 +10,7 @@ spring:
   jpa:
     generate-dll: true
     hibernate:
-      dll-auto: create
+      ddl-auto: create-drop
 hibernate:
   hbm2ddl:
     auto: create

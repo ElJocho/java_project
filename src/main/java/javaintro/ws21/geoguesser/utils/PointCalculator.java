@@ -23,22 +23,22 @@ public class PointCalculator {
         Point guess_point = geometryFactory.createPoint(guess_coord);
 
         GeometryJSON geometryJson = new GeometryJSON(15);
-        FeatureJSON featureJson = new FeatureJSON(geometryJson);
-        SimpleFeature city_bbox = null;
+        Polygon city_bbox = null;
         try{
             Reader stringReader = new StringReader(bbox);
-            city_bbox = featureJson.readFeature(stringReader);
+            city_bbox = geometryJson.readPolygon(stringReader);
             stringReader.close();
         }
         catch (IOException e) {
             System.out.println(e.getMessage());
         }
-        Polygon city_poly = (Polygon) city_bbox.getDefaultGeometry();
-        if(city_poly.contains(guess_point)){
+        System.out.println(city_bbox);
+
+        if(city_bbox.contains(guess_point)){
             return 10f;
         }
 
-        LocationIndexedLine city_outerline = new LocationIndexedLine(city_poly.getExteriorRing());
+        LocationIndexedLine city_outerline = new LocationIndexedLine(city_bbox.getExteriorRing());
         LinearLocation closest_to_point_on_line = city_outerline.project(guess_coord);
         Coordinate closest_point = city_outerline.extractPoint(closest_to_point_on_line);
 

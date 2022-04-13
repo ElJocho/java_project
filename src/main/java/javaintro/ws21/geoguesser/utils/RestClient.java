@@ -24,10 +24,13 @@ public class RestClient {
 
     public String getIDs(String IDs) {
         String bboxString = "&bbox=" + IDs;
+        System.out.println(bboxString);
+
         String url = server + bboxString;
         HttpEntity<String> requestEntity = new HttpEntity<String>("", headers);
         ResponseEntity<String> responseEntity = rest.exchange(url, HttpMethod.GET, requestEntity, String.class);
         this.setStatus(responseEntity.getStatusCode());
+        System.out.println(responseEntity);
         String response = responseEntity.getBody();
         return response;
     }
