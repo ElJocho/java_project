@@ -22,3 +22,7 @@ Usermanagement:
   - for questions as well: https://docs.oracle.com/javase/tutorial/java/index.html
   - and another one: https://docs.oracle.com/javase/tutorial/essential/index.html
   - less of this one: https://docs.oracle.com/javase/tutorial/collections/index.html
+
+
+MVP:
+- https://konbert.com/convert/json/to/sql
