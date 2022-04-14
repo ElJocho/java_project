@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -16,12 +18,12 @@ public class Player {
     private Integer playerId;
 
     @Column(unique=true)
-    private String username;
+    private String name;
     private String password;
 
     @ManyToMany(mappedBy = "players")
     @JsonIgnoreProperties({"players", "images", "cities"})
-    private Set<Game> games = new HashSet<>();
+    private List<Game> games = new ArrayList<>();
 
     public Integer getPlayerId() {
         return playerId;
@@ -31,12 +33,12 @@ public class Player {
         this.playerId = playerId;
     }
 
-    public String getUsername() {
-        return username;
+    public String getName() {
+        return name;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPassword() {
@@ -48,18 +50,18 @@ public class Player {
     }
 
 
-    public Set<Game> getGames() {
+    public List<Game> getGames() {
         return games;
     }
 
-    public void setGames(Set<Game> games) {
+    public void setGames(List<Game> games) {
         this.games = games;
     }
     @Override
     public String toString() {
         return "Player{" +
                 "id=" + playerId +
-                ", name='" + username + '\'' +
+                ", name='" + name + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }

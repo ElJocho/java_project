@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class Game {
             joinColumns = @JoinColumn(name = "cityId"),
             inverseJoinColumns = @JoinColumn(name = "gameId"))
     @JsonIgnoreProperties("games")
-    private Set<City> cities = new HashSet<>();
+    private List<City> cities = new ArrayList<>();
 
     @ManyToMany
     @JoinTable(
@@ -47,7 +48,7 @@ public class Game {
             joinColumns = @JoinColumn(name = "gameId"),
             inverseJoinColumns = @JoinColumn(name = "playerId"))
     @JsonIgnoreProperties("games")
-    private Set<Player> players = new HashSet<>();
+    private List<Player> players = new ArrayList<>();
 
     public Integer getGameId() {
         return gameId;
@@ -113,11 +114,11 @@ public class Game {
         this.images = images;
     }
 
-    public Set<City> getCities() {
+    public List<City> getCities() {
         return cities;
     }
 
-    public void setCities(Set<City> cities) {
+    public void setCities(List<City> cities) {
         this.cities = cities;
     }
 
@@ -129,11 +130,11 @@ public class Game {
         Points = points;
     }
 
-    public Set<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
     }
 
-    public void setPlayers(Set<Player> players) {
+    public void setPlayers(List<Player> players) {
         this.players = players;
     }
 }

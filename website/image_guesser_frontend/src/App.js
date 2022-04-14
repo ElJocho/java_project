@@ -32,7 +32,6 @@ class App extends Component {
     this.activateSignUp = this.activateSignUp.bind(this);
     this.logOut = this.logOut.bind(this)
     this.loadGames = this.loadGames.bind(this)
-    this.goToLobby = this.goToLobby.bind(this)
     this.updateGame = this.updateGame.bind(this)
     this.getApiKey = this.getApiKey.bind(this)
     this.goToScreenAndChangeGame = this.goToScreenAndChangeGame.bind(this)
@@ -56,7 +55,7 @@ class App extends Component {
       )
   }
 
-  loadGames(e){
+  loadGames(new_game=null){
     fetch(`http://localhost:8090/get_games`, {
       method: 'POST',
       headers: {
@@ -69,6 +68,13 @@ class App extends Component {
       let activeGames = [];
       let oldGames = [];
       for (var game of games) {
+        // update game with reloaded game
+        if (new_game!==null){
+          if (game.id === new_game.id){
+            new_game=game;
+          }
+        }
+
         if (!game.active){
           openLobbies.push(game)
         }
@@ -79,7 +85,7 @@ class App extends Component {
           oldGames.push(game)
         }
       }
-      this.setState({oldGames: oldGames, activeGames: activeGames, openLobbies: openLobbies})
+      this.setState({oldGames: oldGames, activeGames: activeGames, openLobbies: openLobbies, currentGame: new_game})
     }
     )
   }
@@ -123,13 +129,8 @@ class App extends Component {
     })
   }
 
-  goToLobby(e){
-    this.setState({currentGame: JSON.parse(e.currentTarget.getAttribute("game")), screen: 'lobby'})
-  }
-
   updateGame(game){
-    this.setState({currentGame: game})
-    this.loadGames()
+    this.loadGames(game)
   }
 
 
@@ -150,8 +151,7 @@ class App extends Component {
           <ScrollView heading="Open Lobbies" itemList={ this.state.openLobbies } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame } screen="lobby"></ScrollView>
           <button className='button_guess' onClick={this.goToScreenAndChangeGame } currentGame={ null } screen='lobby'>Open Lobby</button>
         </div>
-        <ScrollView heading="Old Games" itemList={ this.state.oldGames } ListElement={ GameElement }></ScrollView>
-
+        <ScrollView heading="Old Games" itemList={ this.state.oldGames } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame} screen="game"></ScrollView>
       </App_Body>
     
     let lobbyScreen = <Lobby player={ this.state.player } goToScreenAndChangeGame={ this.goToScreenAndChangeGame } game={ this.state.currentGame } updateGame={ this.updateGame }></Lobby>

@@ -20,7 +20,9 @@ async function createLobby(setupData){
 }
 
 
-export default function Game({ player, goToScreenAndChangeGame, game , updateGame, apiKey}) {
+export default function Game({ player, goToScreenAndChangeGame, game , updateGame, apiKey }) {
+
+
     const onSubmitButtonClick = (e) => {
         let coordinates = document.getElementById("coords").innerHTML.split(' ')
 
@@ -42,36 +44,54 @@ export default function Game({ player, goToScreenAndChangeGame, game , updateGam
         }
     }
     let points = null;
-    
+
+
+    let isFinished=!game.points.includes(-1)
+
+
     if (game.cities.length>1){
         let point_clone = JSON.parse(JSON.stringify(game.points))
         let no_players = game.players.length;
         points = new Array(no_players).fill(0);
-        while(point_clone>game.players.length){
+        while(point_clone.length> (isFinished ? 0 : no_players)){
             for (let x = 0; x<game.players.length; x++){
-                points[x] += point_clone.shift()
+                let p = point_clone.shift()
+                points[x] += p
             }
         }
     }
 
-    return (
-        <App_Body>
-            
-            <div>
-                <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
-                <ScrollView ListElement={ PlayerElement } itemList={ game.players } heading="Players" points={ points }></ScrollView>
-                <h3>Try to guess where you are located, then mark your position in the map.</h3>
-                <Carousel className="Map_Carousel" infiniteLoop={true} showStatus={false}>
-                    <Mapillary accessToken={ apiKey } imageId={game.images.at(-3)}></Mapillary>
-                    <Mapillary accessToken={ apiKey } imageId={game.images.at(-2)}></Mapillary>
-                    <Mapillary accessToken={ apiKey } imageId={game.images.at(-1)}></Mapillary>
-                </Carousel>
-                
-                <Map>
-                </Map>
-                <button className='button_guess' onClick={ onSubmitButtonClick }>Commit Guess</button>
-            </div>
+    const handleUpdate = () =>{
+        updateGame(game)
+    }
 
+
+    return (
+
+        <App_Body>
+                <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
+                <button className='button_guess' onClick={ handleUpdate }>Reload</button>
+
+                <ScrollView ListElement={ PlayerElement } itemList={ game.players } heading="Players" points={ points } winner={ isFinished? game.winner:null }></ScrollView>
+                {game.cities.length>1? <ScrollView heading="Cities" ListElement={ PlayerElement } itemList={ isFinished? game.cities: game.cities.slice(0,-1) } winner={null} points={null}></ScrollView>:null}
+            {
+                isFinished
+                ? null
+                :
+            
+                <div>
+                    <h3>Try to guess where you are located, then mark your position in the map.</h3>
+                    <Carousel className="Map_Carousel" infiniteLoop={true} showStatus={false}>
+                        <Mapillary accessToken={ apiKey } imageId={game.images.at(-3)}></Mapillary>
+                        <Mapillary accessToken={ apiKey } imageId={game.images.at(-2)}></Mapillary>
+                        <Mapillary accessToken={ apiKey } imageId={game.images.at(-1)}></Mapillary>
+                    </Carousel>
+                    
+                    <Map>
+                    </Map>
+                    <button className='button_guess' onClick={ onSubmitButtonClick }>Commit Guess</button>
+                </div>
+            }
         </App_Body>
             
     );

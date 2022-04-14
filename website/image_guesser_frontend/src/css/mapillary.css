@@ -12,3 +12,9 @@
 .control-arrow:hover {
     background: rgba(0,0,0,0.4) !important;
 }
+.slide {
+    opacity: 0;
+}
+.selected {
+    opacity: 1;
+}

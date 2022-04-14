@@ -91,10 +91,25 @@ export default function Lobby({ player, goToScreenAndChangeGame, game , updateGa
             player_ids.push(p.playerId)
         }
     }
+
+    const handleUpdate = (e) =>{
+        updateGame(game)
+        if (game.active){
+            goToScreenAndChangeGame(e)
+        }
+    }
+
+
     return (
         
         <App_Body>
             <button className="backButton" onClick={ goToScreenAndChangeGame } screen='menu'></button>
+            {
+                game===undefined ? null 
+                : <button className='button_guess' onClick={ handleUpdate } screen="game" game={JSON.stringify(game)}>Reload</button>
+
+            }
+
             {
                 game === undefined ? 
                     <form className='lobbyForm' onSubmit={ handleSubmit }>
@@ -115,7 +130,7 @@ export default function Lobby({ player, goToScreenAndChangeGame, game , updateGa
                     </form>
                 :
                     <div>
-                        <h3>Lobby "{ game.name }" started by { game.players[0].username }</h3>
+                        <h3>Lobby "{ game.name }" started by { game.players[0].name }</h3>
                         <h3>Max Players: {game.maxPlayers}</h3>
                         <h3>Rounds: { game.rounds }</h3>
 

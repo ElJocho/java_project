@@ -37,7 +37,7 @@ public class GameService {
         StringBuilder coordinateStringBuilder = new StringBuilder();
 
         // get city and convert bbox to format mapillary requires
-        Set<City> cities = game.getCities();
+        List<City> cities = game.getCities();
         List<Integer> alreadyUsedCityIds = new ArrayList<>();
 
         cities.forEach(city -> {alreadyUsedCityIds.add(city.getId());});
@@ -48,7 +48,6 @@ public class GameService {
         City city = cityService.randomCity(alreadyUsedCityIds);
         JSONObject feature = new JSONObject(city.getGeojsonBBox());
         JSONArray coordinates = feature.getJSONArray("coordinates").getJSONArray(0);
-        System.out.println(coordinates);
         for (int i = 0; i < coordinates.length(); ++i) {
             if (i == 0 | i == 2){
                 JSONArray xy = coordinates.getJSONArray(i);
@@ -63,7 +62,6 @@ public class GameService {
 
         // request image ids with bbox string and save them to game
         JSONArray answer = new JSONObject(restClient.getIDs(coordinateString)).getJSONArray("data");
-        System.out.println(answer);
 
         List<Long> images = game.getImages();
         for (int i = 0; i< answer.length(); i++){
@@ -94,7 +92,7 @@ public class GameService {
 
     public Game addPlayer(Player player, Integer id){
         Game game = repository.getById(id);
-        Set<Player> players = game.getPlayers();
+        List<Player> players = game.getPlayers();
         if (players.size() < game.getMaxPlayers() & player != null){
             players.add(player);
             game.setPlayers(players);
@@ -113,11 +111,12 @@ public class GameService {
     }
 
     public Game commitGuess(Game game, int player_id, float x, float y){
+        game = repository.getById(game.getGameId());
         Player player = playerService.getById(player_id);
         int currentRound = game.getCities().size();
 
         // check for location of playerid in player list
-        List<Player> players = new ArrayList<>(game.getPlayers());
+        List<Player> players = game.getPlayers();
         int num_players = players.size();
         int position_current_player = 0;
         for (int i = 0; i<num_players; i++){
@@ -129,18 +128,19 @@ public class GameService {
         int index_of_current_player_and_round = (currentRound-1)*(num_players) + position_current_player;
         List<Float> points = game.getPoints();
 
-        // instead of 2.5 call point function here with x,y and city bbox input
         // if clause prevents cheating/bugs/correcting guesses
-        String bbox = new ArrayList<City>(game.getCities()).get(currentRound-1).getGeojsonBBox();
+        String bbox = game.getCities().get(currentRound-1).getGeojsonBBox();
         if (points.get(index_of_current_player_and_round).equals(-1f)){
             points.set(index_of_current_player_and_round, pointCalculator.calculate(x,y, bbox));
         }
         game.setPoints(points);
-        repository.save(game);
 
         if (! points.contains(-1.f) & currentRound != game.getRounds()){
             game = setupNewRound(game);
         }
-        return game;
+        else if (! points.contains(-1.f) & currentRound == game.getRounds()) {
+            game.setWinner(pointCalculator.calculateWinner(points, players, num_players));
+        }
+        return repository.save(game);
     }
 }

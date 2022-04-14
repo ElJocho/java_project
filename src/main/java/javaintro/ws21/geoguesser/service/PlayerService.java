@@ -18,7 +18,7 @@ public class PlayerService {
     }
 
     public Player signUpPerson(Player player) {
-        if (repository.existsByUsername(player.getUsername())){
+        if (repository.existsByName(player.getName())){
             return null;
         }
         else {
@@ -27,7 +27,7 @@ public class PlayerService {
     }
 
     public Player loginPerson(Player request_player){
-        Player player = repository.findByUsername(request_player.getUsername());
+        Player player = repository.findByName(request_player.getName());
         if (player != null){
             if (request_player.getPassword().equals( player.getPassword() )){
                 return player;

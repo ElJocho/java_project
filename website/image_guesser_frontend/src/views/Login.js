@@ -23,13 +23,13 @@ async function loginUser(credentials, isLogin) {
 }
 
 export default function Login({ setPlayer, modalActive , disableModal, isLogin }) {
-  const [username, setUserName] = useState();
+  const [name, setName] = useState();
   const [password, setPassword] = useState();
   const handleSubmit = async e => {
     e.preventDefault();
     const player = await loginUser(
     {
-      username: username,
+      name: name,
       password: password
     }, isLogin );
     if (player && player.playerId != undefined){
@@ -56,7 +56,7 @@ export default function Login({ setPlayer, modalActive , disableModal, isLogin }
                         <form onSubmit={handleSubmit}>
                             <label>
                             <p>Username</p>
-                            <input type="text" onChange={e => setUserName(e.target.value)} />
+                            <input type="text" onChange={e => setName(e.target.value)} />
                             </label>
                             <label>
                             <p>Password</p>

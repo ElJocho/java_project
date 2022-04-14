@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import '../css/scrollView.css';
 
 
-export default function ScrollView({ itemList, onClick, ListElement, screen, heading, points }) {
+export default function ScrollView({ itemList, onClick, ListElement, screen, heading, points, winner }) {
       const [isCollapsed, setCollapsed] = useState(true)
 
      const toggleCollapse = (e) => {
@@ -21,7 +21,7 @@ export default function ScrollView({ itemList, onClick, ListElement, screen, hea
         {isCollapsed ? null :
           <div className="collapseList" id="collapseList">
           {itemList.map(function(element, idx){
-          return (<ListElement element={ element } onClick={ onClick } key={ idx } screen={ screen } points={ points ? points[idx]: null }></ListElement>)
+          return (<ListElement element={ element } onClick={ onClick } key={ idx } screen={ screen } points={ points ? points[idx]: null } winner={winner?winner:null}></ListElement>)
         })}
         </div>
 

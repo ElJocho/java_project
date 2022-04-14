@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface PlayerRepository extends JpaRepository<Player, Integer> {
-    Player findByUsername(String username);
-    boolean existsByUsername(String username);
+    Player findByName(String username);
+    boolean existsByName(String username);
 }
