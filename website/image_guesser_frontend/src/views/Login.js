@@ -4,7 +4,7 @@ import '../css/login.css';
 import AriaModal from 'react-aria-modal'
 
 async function loginUser(credentials, isLogin) {
- return fetch(`http://localhost:8090/${isLogin ? 'login_player' : 'create_player'}`, {
+ return fetch(`http://${api_url}/${isLogin ? 'login_player' : 'create_player'}`, {
    method: 'POST',
    headers: {
      'Content-Type': 'application/json'

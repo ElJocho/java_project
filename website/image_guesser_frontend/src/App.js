@@ -42,7 +42,7 @@ class App extends Component {
 
   }
   getApiKey(){
-    fetch(`http://localhost:8090/get_key`, {
+    fetch(`http://${api_url}/get_key`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -50,13 +50,12 @@ class App extends Component {
     }).then(data => data.text()).then(
         data=>{
           this.state.apiKey = data
-          console.log(this.state.apiKey)
         }
       )
   }
 
   loadGames(new_game=null){
-    fetch(`http://localhost:8090/get_games`, {
+    fetch(`http://${api_url}/get_games`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
