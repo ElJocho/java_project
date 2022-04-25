@@ -12,6 +12,7 @@ import Game from './views/Game';
 class App extends Component {
   constructor(props) {
     super(props);
+    this.props.api_url = "localhost:8080";
 
 
     this.state = {
@@ -42,7 +43,7 @@ class App extends Component {
 
   }
   getApiKey(){
-    fetch(`http://${api_url}/get_key`, {
+    fetch(`http://${this.props.api_url}/get_key`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -55,7 +56,7 @@ class App extends Component {
   }
 
   loadGames(new_game=null){
-    fetch(`http://${api_url}/get_games`, {
+    fetch(`http://${this.props.api_url}/get_games`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -153,10 +154,10 @@ class App extends Component {
         <ScrollView heading="Old Games" itemList={ this.state.oldGames } ListElement={ GameElement } onClick={ this.goToScreenAndChangeGame} screen="game"></ScrollView>
       </App_Body>
     
-    let lobbyScreen = <Lobby player={ this.state.player } goToScreenAndChangeGame={ this.goToScreenAndChangeGame } game={ this.state.currentGame } updateGame={ this.updateGame }></Lobby>
+    let lobbyScreen = <Lobby api_url={ this.props.api_url } player={ this.state.player } goToScreenAndChangeGame={ this.goToScreenAndChangeGame } game={ this.state.currentGame } updateGame={ this.updateGame }></Lobby>
   
 
-    let gameScreen = <Game player={ this.state.player} game={ this.state.currentGame } apiKey={ this.state.apiKey } goToScreenAndChangeGame={ this.goToScreenAndChangeGame } updateGame={this.updateGame}></Game>
+    let gameScreen = <Game api_url={ this.props.api_url } player={ this.state.player} game={ this.state.currentGame } apiKey={ this.state.apiKey } goToScreenAndChangeGame={ this.goToScreenAndChangeGame } updateGame={this.updateGame}></Game>
 
     if (this.state.player == false){
       current_screen = startScreen;
@@ -193,7 +194,7 @@ class App extends Component {
           current_screen
         }
         <p id="coordinates"></p>
-        <Login setPlayer={this.setPlayer} modalActive={this.state.modalActive} disableModal={this.disableModal} isLogin={this.state.login}></Login>
+        <Login api_url={ this.props.api_url } setPlayer={this.setPlayer} modalActive={this.state.modalActive} disableModal={this.disableModal} isLogin={this.state.login}></Login>
      </div>
     );
   }

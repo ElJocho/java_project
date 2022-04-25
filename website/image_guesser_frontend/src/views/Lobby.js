@@ -5,8 +5,8 @@ import ScrollView from '../common/ScrollView';
 import PlayerElement from '../common/PlayerElement';
 
 
-async function createLobby(setupData){
-    return fetch(`http://localhost:8090/create_game`, {
+async function createLobby(setupData, api_url){
+    return fetch(`http://${api_url}/create_game`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -15,8 +15,8 @@ async function createLobby(setupData){
       }).then(data => data.json())
 }
 
-async function addPlayer(player, gameId){
-    return fetch(`http://localhost:8090/add_player?id=${gameId}`, {
+async function addPlayer(player, gameId, api_url){
+    return fetch(`http://${api_url}/add_player?id=${gameId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -25,8 +25,8 @@ async function addPlayer(player, gameId){
       }).then(data => data.json())
 }
 
-async function startGame(game){
-    return fetch(`http://localhost:8090/start_game`, {
+async function startGame(game, api_url){
+    return fetch(`http://${api_url}/start_game`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -36,7 +36,7 @@ async function startGame(game){
 }
 
 
-export default function Lobby({ player, goToScreenAndChangeGame, game , updateGame}) {
+export default function Lobby({ player, goToScreenAndChangeGame, game , updateGame, api_url}) {
     const [name, setName] = useState();
     const [rounds, setRounds] = useState();
     const [maxPlayers, setMaxPlayers] = useState();
@@ -51,10 +51,10 @@ export default function Lobby({ player, goToScreenAndChangeGame, game , updateGa
           ownerId: player.playerId,
           isActive: false,
           winner: null
-        })
+        }, api_url)
         
         
-        await addPlayer(player, game_data_1.gameId)
+        await addPlayer(player, game_data_1.gameId, api_url)
         .then(game_data=>{
             updateGame(game_data)
         });
@@ -62,13 +62,13 @@ export default function Lobby({ player, goToScreenAndChangeGame, game , updateGa
       }
     
     const handleAddPlayer = async e => {
-        await addPlayer(player, game.gameId).then(game_data=>{
+        await addPlayer(player, game.gameId, api_url).then(game_data=>{
             updateGame(game_data)
         })
     }
 
     const handleStartGame = async e => {
-        await startGame(game).then(
+        await startGame(game, api_url).then(
             game_data=> {
                 // hey its ugly, but it works :P
                 updateGame(game_data)

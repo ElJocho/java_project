@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import '../css/login.css';
 import AriaModal from 'react-aria-modal'
 
-async function loginUser(credentials, isLogin) {
+async function loginUser(credentials, isLogin, api_url) {
  return fetch(`http://${api_url}/${isLogin ? 'login_player' : 'create_player'}`, {
    method: 'POST',
    headers: {
@@ -22,7 +22,7 @@ async function loginUser(credentials, isLogin) {
     })
 }
 
-export default function Login({ setPlayer, modalActive , disableModal, isLogin }) {
+export default function Login({ setPlayer, modalActive , disableModal, isLogin, api_url }) {
   const [name, setName] = useState();
   const [password, setPassword] = useState();
   const handleSubmit = async e => {
@@ -31,7 +31,7 @@ export default function Login({ setPlayer, modalActive , disableModal, isLogin }
     {
       name: name,
       password: password
-    }, isLogin );
+    }, isLogin, api_url );
     if (player && player.playerId != undefined){
       setPlayer(player);
       disableModal()

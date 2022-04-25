@@ -9,24 +9,13 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from 'react-responsive-carousel';
 
 
-async function createLobby(setupData){
-    return fetch(`http://localhost:8090/create_game`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(setupData)
-      }).then(data => data.json())
-}
-
-
-export default function Game({ player, goToScreenAndChangeGame, game , updateGame, apiKey }) {
+export default function Game({ player, goToScreenAndChangeGame, game , updateGame, apiKey, api_url }) {
 
 
     const onSubmitButtonClick = (e) => {
         let coordinates = document.getElementById("coords").innerHTML.split(' ')
 
-        return fetch(`http://localhost:8090/commit_guess?player_id=${player.playerId}&x=${coordinates[0]}&y=${coordinates[1]}`, {
+        return fetch(`http://${api_url}/commit_guess?player_id=${player.playerId}&x=${coordinates[0]}&y=${coordinates[1]}`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json'
