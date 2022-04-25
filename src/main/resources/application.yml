@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8080
 spring:
   datasource:
     sql.init.mode: always
@@ -11,6 +11,7 @@ spring:
     generate-dll: true
     hibernate:
       ddl-auto: create-drop
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
 hibernate:
   hbm2ddl:
     auto: create
